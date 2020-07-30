@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "graphql-playground-html": "^1.6.25",
     "graphql-yoga": "^1.18.3"
   }
 }
