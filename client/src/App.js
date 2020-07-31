@@ -1,26 +1,30 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { Component } from 'react';
 import './App.css';
+//import Chat from './components/Chat';
+import Login from './components/Login';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+class App extends Component {
+
+  render() {
+    //let ret = (entered) ? <Chat /> : <Login />;
+    let ret = <Login />
+
+    return (
+      <div id="app" class="container" style={{ paddingTop: "100px" }}>
+        <div class="row justify-content-center">
+          <div class="col-md-8">
+            <div class="card">
+              <div class="card-body">
+                <h1>Testing</h1>
+                {ret}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 }
 
 export default App;
