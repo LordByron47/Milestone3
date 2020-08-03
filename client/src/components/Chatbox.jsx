@@ -1,31 +1,21 @@
 import React, { Component } from 'react'
+import Chat from './Chat'
 
 export class Chatbox extends Component {
-    /*
+    //username comes in as this.props.username
     render() {
-        chats = this.props.chats;
-        displayChats = chats.map((chat) => {
-            <React.Fragment>
-                <dt>{chat.from}</dt>
-                <dd>{chat.message}</dd>
-            </React.Fragment>
-        });
-
         return (
-            <div class="card-body">
-                <dl>{displayChats}</dl>
+            <div class="row" v-if="entered">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">Chatbox</div>
+                        <h6>Username: {this.props.username}</h6>
+                        <Chat chats={this.props.chats} />
+                    </div>
+                </div>
             </div>
-        );
-    }
-    */
-
-    render(){
-        return (
-            <React.Fragment>
-                <h1>Chatbox</h1>
-            </React.Fragment>
-        );
+        )
     }
 }
 
-export default Chatbox;
+export default Chat

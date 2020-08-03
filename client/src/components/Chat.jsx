@@ -1,20 +1,32 @@
 import React, { Component } from 'react'
-import {Chatbox} from './Chatbox'
 
 export class Chat extends Component {
+    
     render() {
-        alert("Chat");
+        const chats = this.props.chats;
+        const displayChats = chats.map((chat) => 
+            <React.Fragment key={chat.id.toString()}>
+                <dt>{chat.from}</dt>
+                <dd>{chat.message}</dd>
+            </React.Fragment>
+        );
+
         return (
-            <div class="row" v-if="entered">
-                <div class="col-md-12">
-                    <div class="card">
-                        <div class="card-header">Chatbox</div>
-                        <Chatbox chats={this.props.chats}/>
-                    </div>
-                </div>
+            <div class="card-body">
+                <dl>{displayChats}</dl>
             </div>
-        )
+        );
     }
+    
+    /*
+    render(){
+        return (
+            <React.Fragment>
+                <h1>Chatbox</h1>
+            </React.Fragment>
+        );
+    }
+    */
 }
 
-export default Chat
+export default Chat;
