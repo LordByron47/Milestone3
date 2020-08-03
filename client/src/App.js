@@ -1,14 +1,30 @@
 import React, { Component } from 'react';
 import './App.css';
-//import Chat from './components/Chat';
+import Chat from './components/Chat';
 import Login from './components/Login';
 
 
 class App extends Component {
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      entered: false,
+      username: ""
+    };
+  }
+
+  setUsername = (newUsername) =>{
+    alert("setUsername");
+    alert(JSON.stringify(this.state));
+    //this.setState({})
+  }
+
   render() {
-    //let ret = (entered) ? <Chat /> : <Login />;
-    let ret = <Login />
+    let ret = (this.props.entered) ? <Chat username={this.state.username} /> : <Login enterChat={this.setUsername}/>;
+    //let ret = <Login />
+    //let ret = this.props.entered ? "true" : "false";
+
 
     return (
       <div id="app" class="container" style={{ paddingTop: "100px" }}>
@@ -24,6 +40,7 @@ class App extends Component {
         </div>
       </div>
     );
+
   }
 }
 
