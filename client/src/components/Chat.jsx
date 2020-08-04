@@ -1,32 +1,28 @@
 import React, { Component } from 'react'
+import Message from './Message'
 
 export class Chat extends Component {
-    
+
     render() {
         const chats = this.props.chats;
-        const displayChats = chats.map((chat) => 
-            <React.Fragment key={chat.id.toString()}>
-                <dt>{chat.from}</dt>
-                <dd>{chat.message}</dd>
-            </React.Fragment>
-        );
+        //alert(JSON.stringify(chats));
+        let displayChats = null;
+        if (!(chats === "undefined")) {
+            displayChats = Object.values(chats).map((chat) =>
+                <Message contents={chat} />
+            );
+        }
+
 
         return (
-            <div class="card-body">
+            /*<div class="card-body">
                 <dl>{displayChats}</dl>
             </div>
+            */
+           <p>Test</p>
         );
     }
-    
-    /*
-    render(){
-        return (
-            <React.Fragment>
-                <h1>Chatbox</h1>
-            </React.Fragment>
-        );
-    }
-    */
+
 }
 
 export default Chat;
