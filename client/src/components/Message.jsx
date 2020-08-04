@@ -2,12 +2,13 @@ import React, { Component } from 'react'
 
 export class Message extends Component {
     render() {
-        const chat = this.props.chat;
+        let myChat = this.props.contents;
+        let displayClass = (myChat.from === this.props.username) ? "card text-right" : "card";
         return (
-            <React.Fragment key={chat.id.toString()}>
-                <dt>{chat.from}</dt>
-                <dd>{chat.message}</dd>
-            </React.Fragment>
+            <div key={myChat.id.toString()} class={displayClass}>
+                <dt>{myChat.from}</dt>
+                <dd>{myChat.message}</dd>
+            </div>
         )
     }
 }

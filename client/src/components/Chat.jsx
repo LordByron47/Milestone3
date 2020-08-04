@@ -4,25 +4,22 @@ import Message from './Message'
 export class Chat extends Component {
 
     render() {
-        const chats = this.props.chats;
-        //alert(JSON.stringify(chats));
+        let myChats = this.props.chats;
+
         let displayChats = null;
-        if (!(chats === "undefined")) {
-            displayChats = Object.values(chats).map((chat) =>
-                <Message contents={chat} />
+
+        if (!(myChats == null) && myChats.chats.length > 0) {
+            displayChats = myChats.chats.map((chat) =>
+                <Message contents={chat} username={this.props.username}/>
             );
         }
 
-
         return (
-            /*<div class="card-body">
+            <div class="card-body">
                 <dl>{displayChats}</dl>
             </div>
-            */
-           <p>Test</p>
         );
     }
-
 }
 
 export default Chat;
