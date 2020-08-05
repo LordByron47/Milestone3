@@ -4,8 +4,15 @@ import Message from './Message'
 export class Chat extends Component {
 
     componentDidUpdate() {
-        let target = document.getElementById("chatDiv");
-        target.scrollTop = target.scrollHeight;
+        let myChats = this.props.chats;
+        if (!(myChats == null) && (myChats.chats.length > 0)) {
+            let last = myChats.chats[myChats.chats.length - 1];
+            if (last.from === this.props.username) {
+                let target = document.getElementById("chatDiv");
+                target.scrollTop = target.scrollHeight;
+            }
+
+        }
     }
 
     render() {
