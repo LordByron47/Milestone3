@@ -6,7 +6,7 @@ export class Message extends Component {
         let myChat = this.props.contents;
         let displayClass = (myChat.from === this.props.username) ? "card text-right" : "card";
         return (
-            <div key={myChat.id.toString()} class={displayClass}>
+            <div className={displayClass}>
                 <dt>{myChat.from}</dt>
                 <dd>{myChat.message}</dd>
             </div>

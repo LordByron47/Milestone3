@@ -8,11 +8,11 @@ export default function Chatbox(props) {
     var { data: allChats } = useQuery(CHATS_QUERY);
     
     return (
-        <div class="row">
-            <div class="col-md-12">
+        <div className="row">
+            <div className="col-md-12">
                 <h4>Welcome, {props.username}</h4>
-                <div class="card">
-                    <div class="card-header">Chatbox</div>
+                <div className="card">
+                    <div className="card-header">Chatbox</div>
                     <DisplayChats chats={allChats} username={props.username}/>
                     <ChatInput username={props.username} />
                 </div>

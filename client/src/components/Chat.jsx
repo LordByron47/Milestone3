@@ -7,7 +7,7 @@ export class Chat extends Component {
         super(props);
         this.state = {
             scrolledToBottom: false,
-            initialSetupComplete:false
+            initialSetupComplete: false
         }
         this.handleScroll = this.handleScroll.bind(this);
     }
@@ -21,10 +21,10 @@ export class Chat extends Component {
         if (!(myChats == null) && (myChats.chats.length > 0)) {
             let last = myChats.chats[myChats.chats.length - 1];
             // if we are joining a chat with existing chats, scroll to the bottom
-            if(this.state.initialSetupComplete === false){
+            if (this.state.initialSetupComplete === false) {
                 //alert('initial');
                 //this.state.initialSetupComplete = true;
-                this.setState({initialSetupComplete:true});
+                this.setState({ initialSetupComplete: true });
                 this.scrollTheDiv();
             }
             // if the logged in user sent the last chat OR was already scrolled to the bottom, scroll
@@ -34,7 +34,7 @@ export class Chat extends Component {
         }
     }
 
-    scrollTheDiv(){
+    scrollTheDiv() {
         let target = document.getElementById("chatDiv");
         target.scrollTop = target.scrollHeight;
     }
@@ -66,12 +66,12 @@ export class Chat extends Component {
         if (!(myChats == null) && myChats.chats.length > 0) {
 
             displayChats = myChats.chats.map((chat) =>
-                <Message contents={chat} username={this.props.username} />
+                <Message key={chat.id} contents={chat} username={this.props.username} />
             );
         }
 
         return (
-            <div id="chatDiv" class="card-body" style={{ overflowY: "auto", maxHeight: '500px' }} onScroll={this.handleScroll}>
+            <div id="chatDiv" className="card-body" style={{ overflowY: "auto", maxHeight: '500px' }} onScroll={this.handleScroll}>
                 <dl>{displayChats}</dl>
             </div>
         );

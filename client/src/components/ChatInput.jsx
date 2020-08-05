@@ -10,7 +10,7 @@ export default function ChatInput(props) {
     const user = props.username;
     return (
         <input type='text'
-            class="form-control"
+            className="form-control"
             placeholder="Type your message..."
             onKeyUp={event => {
                 if (event.key === 'Enter') {

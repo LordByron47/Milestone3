@@ -24,11 +24,11 @@ class App extends Component {
 
     return (
       <React.Fragment>
-      <div id="app" class="container" style={{ paddingTop: "50px" }}>
-        <div class="row justify-content-center">
-          <div class="col-md-8">
-            <div class="card">
-              <div class="card-body">
+      <div id="app" className="container" style={{ paddingTop: "50px" }}>
+        <div className="row justify-content-center">
+          <div className="col-md-8">
+            <div className="card">
+              <div className="card-body">
                 {ret}
               </div>
             </div>
