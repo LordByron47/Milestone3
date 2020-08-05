@@ -16,8 +16,12 @@ export class Login extends Component {
         if (this.state.user === "") {    
             alert("Username cannot be blank.");
         }
+        // there is a valid username
         else {
-            this.props.enterChat(this.state.user);
+            //remove
+            let name = this.state.user.trim();
+            name = name.replace(/\b\w/g, c => c.toUpperCase());
+            this.props.enterChat(name);
         }
     }
 

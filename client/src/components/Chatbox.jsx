@@ -10,6 +10,7 @@ export default function Chatbox(props) {
     return (
         <div class="row">
             <div class="col-md-12">
+                <h4>Welcome, {props.username}</h4>
                 <div class="card">
                     <div class="card-header">Chatbox</div>
                     <DisplayChats chats={allChats} username={props.username}/>
