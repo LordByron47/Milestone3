@@ -4,7 +4,7 @@ import { useMutation } from 'react-apollo';
 
 export default function ChatInput(props) {
     // call sendMsg to send the message to the server
-    const [sendMsg, { data }] = useMutation(SEND_MESSAGE_MUTATION);
+    const [sendMsg,] = useMutation(SEND_MESSAGE_MUTATION);
 
     //store username
     const user = props.username;
@@ -17,7 +17,7 @@ export default function ChatInput(props) {
                     //send message to server
                     sendMsg({ variables: { from: user, message: event.target.value } });
                     //clear input field
-                    event.target.value="";
+                    event.target.value = "";
                 }
             }} />
     )
