@@ -10,6 +10,8 @@ export class Chat extends Component {
             initialSetupComplete: false
         }
         this.handleScroll = this.handleScroll.bind(this);
+        this.determinePrevName = this.determinePrevName.bind(this);
+        this.determineNextName = this.determineNextName.bind(this);
     }
 
     componentDidUpdate() {
@@ -57,6 +59,25 @@ export class Chat extends Component {
         target.scrollTop = target.scrollHeight;
     }
 
+    //contains the logic to determine the sender of the message BEFORE chats[index]. Returns "" if first message
+    determinePrevName(index) {
+        if (index === 0) {
+            return "";
+        }
+        else {
+            return this.props.chats.chats[index-1].from;
+        }
+    }
+
+    determineNextName(index){
+        if(index===(this.props.chats.chats.length-1)){
+            return "";
+        }
+        else{
+            return this.props.chats.chats[index+1].from;
+        }
+    }
+
     render() {
 
         let myChats = this.props.chats;
@@ -65,10 +86,12 @@ export class Chat extends Component {
 
         if (!(myChats == null) && myChats.chats.length > 0) {
 
-            displayChats = myChats.chats.map((chat) =>
-                <Message key={chat.id} contents={chat} username={this.props.username} />
+            displayChats = myChats.chats.map((chat, index) =>
+                <Message key={chat.id} contents={chat} username={this.props.username} prevName={this.determinePrevName(index)} 
+                    nextName={this.determineNextName(index)} />
             );
         }
+
 
         return (
             <div id="chatDiv" className="card-body" style={{ overflowY: "auto", maxHeight: '500px' }} onScroll={this.handleScroll}>

@@ -11,3 +11,18 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+#chatDiv::-webkit-scrollbar {
+  width: 12px;
+  background-color: #F5F5F5; 
+}
+
+#chatDiv::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+  background-color: #8ec5fc; 
+}
+
+#chatDiv::-webkit-scrollbar-track {
+  background: white;
+}

@@ -12,7 +12,7 @@ export default function Chatbox(props) {
             <div className="col-md-12">
                 <h4>Welcome, {props.username}</h4>
                 <div className="card">
-                    <div className="card-header">Chatbox</div>
+                    <div className="card-header" style={{backgroundColor:"#8ec5fc"}}>Chatbox</div>
                     <DisplayChats chats={allChats} username={props.username}/>
                     <ChatInput username={props.username} />
                 </div>
