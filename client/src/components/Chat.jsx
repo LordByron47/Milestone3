@@ -29,12 +29,14 @@ export class Chat extends Component {
             2.) that chat window was already scrolled to the bottom
     */
     componentDidUpdate() {
+        let needToChangeInitialSetup = false;
         let myChats = this.props.chats;
         if (!(myChats == null) && (myChats.chats.length > 0)) {
             let last = myChats.chats[myChats.chats.length - 1];
             // if we are joining a chat with existing chats, scroll to the bottom
             if (this.state.initialSetupComplete === false) {
-                this.setState({ initialSetupComplete: true });
+                //this.setState({ initialSetupComplete: true });
+                needToChangeInitialSetup = true;
                 scrollTheDiv();
             }
             // if the logged in user sent the last chat OR was already scrolled to the bottom, scroll
@@ -52,20 +54,32 @@ export class Chat extends Component {
                 alert(user.user === this.props.username);
             });
             */
-           alert("here:" +this.state.allUsers.find(user => user.user === last.from));
-            if ((this.state.allUsers.length>0) && (this.state.allUsers.find(user => user.user === last.from) === 'undefined')) {
-                let newUsers = [...this.state.allUsers];
+           alert("here:" +JSON.stringify(this.state.allUsers.find(user => user.user === last.from)));
+           let newUsers = [];
+            if ((this.state.allUsers.length>0) && (last.from !== this.props.username) && (this.state.allUsers.find(user => user.user === last.from) === 'undefined')) {
+                //newUsers = [...this.state.allUsers];
                 const randColor = randomColor();
                 const toAdd = {
                     user:last.from,
                     color:randColor
                 };
-                newUsers.push(toAdd);
+                newUsers = this.state.allUsers.concat(toAdd);
                 alert("new:" +newUsers);
-                this.setState({ allUsers: newUsers });
+                //this.setState({ allUsers: newUsers });
             }
-            
 
+            // set the new state
+            if(needToChangeInitialSetup){
+                this.setState({
+                    initialSetupComplete:true,
+                    allUsers:newUsers
+                })
+            }
+            else{
+                this.setState({
+                    allUsers:newUsers
+                })
+            }
         }
     }
 
