@@ -49,8 +49,10 @@ export class Chat extends Component {
         //set the chat window to scroll to the bottom when initially loaded
         let target = document.getElementById("chatDiv");
         if (target != null) {
+            console.log("target found");
             let isAtBottom = (target.scrollHeight - target.scrollTop === target.offsetHeight);
             if (isAtBottom !== this.state.scrolledToBottom) {
+                console.log("isAtBottom: " + isAtBottom);
                 this.setState({ scrolledToBottom: isAtBottom });
             }
         }
@@ -77,15 +79,15 @@ export class Chat extends Component {
     }
 
     // callback function used to add a new user object to this.state.allUsers
-    addUser(newUser){
-        let newAllUsers=this.state.allUsers.concat(newUser);
+    addUser(newUser) {
+        let newAllUsers = this.state.allUsers.concat(newUser);
         this.setState({
-            allUsers:newAllUsers
+            allUsers: newAllUsers
         });
     }
 
     //returns the current user object from allUsers[]. Returns undefined if not found
-    getCurrentUser(chat){
+    getCurrentUser(chat) {
         return this.state.allUsers.find(user => user.user === chat.from);
     }
 

@@ -2,32 +2,27 @@ import React, { Component } from 'react'
 
 export class Message extends Component {
 
-    constructor(props){
+    constructor(props) {
         super(props);
-        this.currentColor="";
+        this.currentColor=""; // will be set in this.obtainColor().
+        this.obtainColor();
     }
 
     // we get passed a user object as this.props.currentUser. We need to see if that user has a color, or, if no user was found, generate a new one
-    obtainColor(){
-        if(this.props.currentUser===undefined){
+    obtainColor() {
+        if (this.props.currentUser === undefined) {
             const newColor = randomColor();
             const toAdd = {
-                user:this.props.contents.from,
-                color:newColor
+                user: this.props.contents.from,
+                color: newColor
             };
             this.props.addUser(toAdd);
-            this.currentColor=newColor;
+            this.currentColor = newColor;
         }
-        /*
-        else{
-            return this.props.currentUser.color;
+        else {
+            this.currentColor = this.props.currentUser.color;
         }
-        */
-    }
 
-    componentWillMount(){
-        //generate a color if there currently isn't one
-        this.obtainColor();
     }
 
     render() {
@@ -55,7 +50,7 @@ export class Message extends Component {
 
         return (
             <div className={displayClass} style={displayStyle}>
-                <dt style={{color:this.currentColor}}>{fromField}</dt>
+                <dt style={{ color: this.currentColor }}>{fromField}</dt>
                 <dd>{myChat.message}</dd>
             </div>
         )
@@ -102,7 +97,7 @@ function hsv_to_rgb(h, s, v) {
             r = v; g = p; b = q;
     }
 
-    return "#"+toHex((r * 256).toFixed(0)) + toHex((g * 256).toFixed(0)) + toHex((b * 256).toFixed(0));
+    return "#" + toHex((r * 256).toFixed(0)) + toHex((g * 256).toFixed(0)) + toHex((b * 256).toFixed(0));
 }
 
 // adapted from http://www.javascripter.net/faq/rgbtohex.htm
