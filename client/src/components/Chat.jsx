@@ -50,10 +50,12 @@ export class Chat extends Component {
         let target = document.getElementById("chatDiv");
         if (target != null) {
             console.log("target found");
-            let isAtBottom = (target.scrollHeight - target.scrollTop === target.offsetHeight);
+            let isAtBottom = (target.scrollHeight - target.scrollTop <= target.offsetHeight + 1); // for some reason, target.scrollTop occassionally becomes a decimal. Difference 
+            console.log("height:", target.scrollHeight, ", top:", target.scrollTop, ", offset:", target.offsetHeight);
+            console.log("isAtBottom: " + isAtBottom);
             if (isAtBottom !== this.state.scrolledToBottom) {
-                console.log("isAtBottom: " + isAtBottom);
-                this.setState({ scrolledToBottom: isAtBottom });
+                console.log("changing scrolledToBottom");
+                this.setState((state) => { return { scrolledToBottom: isAtBottom } });
             }
         }
     }
@@ -80,9 +82,9 @@ export class Chat extends Component {
 
     // callback function used to add a new user object to this.state.allUsers
     addUser(newUser) {
-        let newAllUsers = this.state.allUsers.concat(newUser);
-        this.setState({
-            allUsers: newAllUsers
+        //let newAllUsers = this.state.allUsers.concat(newUser);
+        this.setState((state) => {
+            return { allUsers: state.allUsers.concat(newUser) }
         });
     }
 
@@ -96,9 +98,12 @@ export class Chat extends Component {
         let displayChats = null;
         // displays any messages present in chat
         if (!(myChats == null) && myChats.chats.length > 0) {
-            displayChats = myChats.chats.map((chat, index) =>
-                <Message key={chat.id} contents={chat} loggedInUsername={this.props.username} prevName={this.determinePrevName(index)}
-                    nextName={this.determineNextName(index)} currentUser={this.getCurrentUser(chat)} addUser={this.addUser} />
+            displayChats = myChats.chats.map((chat, index) =>{
+                console.log(chat.from);
+                return (<Message key={chat.id} contents={chat} loggedInUsername={this.props.username} prevName={this.determinePrevName(index)}
+                nextName={this.determineNextName(index)} currentUser={this.getCurrentUser(chat)} addUser={this.addUser} />)
+            }
+                
             );
         }
 
@@ -114,6 +119,8 @@ export default Chat;
 
 // scrolls to the bottom of the chatbox
 function scrollTheDiv() {
+    console.log("scrolling");
     let target = document.getElementById("chatDiv");
     target.scrollTop = target.scrollHeight;
+    console.log("new scrollTop: ", target.scrollTop);
 }
