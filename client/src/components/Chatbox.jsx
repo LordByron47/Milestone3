@@ -6,14 +6,14 @@ import { useQuery, useSubscription } from 'react-apollo';
 
 export default function Chatbox(props) {
     var { data: allChats } = useQuery(CHATS_QUERY);
-    
+
     return (
         <div className="row">
             <div className="col-md-12">
                 <h4>Welcome, {props.username}</h4>
                 <div className="card">
-                    <div className="card-header" style={{backgroundColor:"#8ec5fc"}}>Chatbox</div>
-                    <DisplayChats chats={allChats} username={props.username}/>
+                    <div id="chatBoxHeader" className="card-header" style={{ backgroundColor: "#8ec5fc" }}>Chatbox</div>
+                    <DisplayChats chats={allChats} username={props.username} />
                     <ChatInput username={props.username} />
                 </div>
             </div>
@@ -21,12 +21,12 @@ export default function Chatbox(props) {
     )
 }
 
-function DisplayChats(props){
+function DisplayChats(props) {
     let allChats = props.chats;
     const { data: newChat } = useSubscription(MESSAGE_SENT_SUBSCRIPTION);
-    if(allChats != null && newChat != null){
+    if (allChats != null && newChat != null) {
         allChats.chats.push(newChat.messageSent);
     }
 
-    return <Chat chats={allChats} username={props.username}/>
+    return <Chat chats={allChats} username={props.username} />
 }

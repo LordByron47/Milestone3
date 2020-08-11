@@ -124,19 +124,23 @@ export class Chat extends Component {
         return listOfUsers;
     }
 
+    obtainCorrectColor(listOfUsers, senderName){
+        return listOfUsers.find(({ user }) => user === senderName).color;
+    }
+
     render() {
         let myChats = this.props.chats;
         let displayChats = null;
 
         // displays any messages present in chat
-        if (!(myChats == null) && myChats.chats.length > 0) {
+        //console.log(myChats);
+        if ((myChats !== null) && (myChats !== undefined) && myChats.chats.length > 0) {
             //console.log(myChats.chats);
             let listOfUsers = this.generateListOfUsers();
             //console.log("list:",listOfUsers);
             displayChats = myChats.chats.map((chat, index) => {
-                let currentUser = listOfUsers.find(({ user }) => user === chat.from);
                 return <Message key={chat.id} contents={chat} loggedInUsername={this.props.username} prevName={this.determinePrevName(index)}
-                    nextName={this.determineNextName(index)} usernameColor={currentUser.color} />
+                    nextName={this.determineNextName(index)} usernameColor={this.obtainCorrectColor(listOfUsers, chat.from)} />
             });
         }
 
