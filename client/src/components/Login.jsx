@@ -15,6 +15,10 @@ export class Login extends Component {
         if (this.state.user === "") {    
             alert("Username cannot be blank.");
         }
+        else if(this.state.user.length > 32){
+            alert("Username must be less than 32 characters.");
+            this.setState({user:""});
+        }
         // there is a valid username
         else {
             //remove any whitespace and standardize the characters in the string

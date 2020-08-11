@@ -14,10 +14,15 @@ export default function ChatInput(props) {
             placeholder="Type your message..."
             onKeyUp={event => {
                 if (event.key === 'Enter') {
-                    //send message to server
-                    sendMsg({ variables: { from: user, message: event.target.value } });
-                    //clear input field
-                    event.target.value = "";
+                    if (event.target.value.length > 255) {
+                        alert("Message must be less than 255 characters.");
+                    }
+                    else {
+                        //send message to server
+                        sendMsg({ variables: { from: user, message: event.target.value } });
+                        //clear input field
+                        event.target.value = "";
+                    }
                 }
             }} />
     )
