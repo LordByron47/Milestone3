@@ -3,6 +3,7 @@ import Chat from './Chat';
 import { MESSAGE_SENT_SUBSCRIPTION } from '../graphql';
 import { useSubscription } from 'react-apollo';
 
+// takes in the existing chats, listens for new chats, and calls <Chat> to render them
 export default function DisplayChats(props) {
     let allChats = props.chats;
     const { data: newChat } = useSubscription(MESSAGE_SENT_SUBSCRIPTION);

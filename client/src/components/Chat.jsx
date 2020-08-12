@@ -13,15 +13,9 @@ export class Chat extends Component {
         this.determinePrevName = this.determinePrevName.bind(this);
         this.determineNextName = this.determineNextName.bind(this);
         //used to track users and their corresponding colors. NOT in state to avoid error from settingState during renders
-        this.allUsers= [{
-            user: props.username,
-            color: props.loggedInUserColor
-        }]
-    }
-
-    // scroll to the bottom of the chat when you first log in
-    componentDidMount() {
-        scrollTheDiv();
+        this.allUsers = new Map();
+        this.allUsers.set(props.username, props.loggedInUserColor);
+        
     }
 
     /* When a new chat is rendered, scroll to the bottom if either: 
@@ -32,9 +26,11 @@ export class Chat extends Component {
         let myChats = this.props.chats;
         if (!(myChats == null) && (myChats.chats.length > 0)) {
             let last = myChats.chats[myChats.chats.length - 1];
-            // if we are joining a chat with existing chats, scroll to the bottom
+            // if we are joining a chat with existing chats, scroll to the bottom.
+            //This is needed since component mounts, then will update with a list of all the chats
             if (this.state.initialSetupComplete === false) {
                 this.setState({ initialSetupComplete: true });
+                this.generateListOfUsers();
                 scrollTheDiv();
             }
             // if the logged in user sent the last chat OR was already scrolled to the bottom, scroll
@@ -49,7 +45,8 @@ export class Chat extends Component {
         //set the chat window to scroll to the bottom when initially loaded
         let target = document.getElementById("chatDiv");
         if (target != null) {
-            let isAtBottom = (target.scrollHeight - target.scrollTop <= target.offsetHeight + 1); // for some reason, target.scrollTop occassionally becomes a decimal. Difference < 1
+            // for some reason, target.scrollTop occassionally becomes a decimal. Difference < 1
+            let isAtBottom = (target.scrollHeight - target.scrollTop <= target.offsetHeight + 1); 
             if (isAtBottom !== this.state.scrolledToBottom) {
                 this.setState(() => ({ scrolledToBottom: isAtBottom }));
             }
@@ -76,61 +73,47 @@ export class Chat extends Component {
         }
     }
 
-    //ensures each user in this.allUsers has a color assigned to them
+    //used to initially generate a list of all users who have sent messages and assigns each a color
     generateListOfUsers() {
-        this.props.chats.chats.map((chat) => {
-            //console.log("from:", chat.from);
-            let currentUser = this.allUsers.find(({ user }) => user === chat.from);
-            //console.log("found:", currentUser);
-            if (currentUser === undefined) {
-                let newColor = randomColor();
-                let newUser = {
-                    user: chat.from,
-                    color: newColor
-                };
-                this.allUsers.push(newUser);
-                //console.log("added user. list is: ", listOfUsers);
+        this.props.chats.chats.forEach((chat) => {
+            //check if the sender of each chat is present in this.allUsers
+            if (this.allUsers.has(chat.from) === false) {
+                this.allUsers.set(chat.from, randomColor());
             }
-            else if ((currentUser.user === this.props.username) && (currentUser.color !== this.props.loggedInUserColor)) {
-                this.allUsers.splice(0, 1, {
-                    user: this.props.username,
-                    color: this.props.loggedInUserColor
-                });
-                //console.log("changed loggedInColor. List is now:", listOfUsers)
-            }
-            //console.log("final new users:", listOfUsers);
-            return "";
         });
-        /*
-        //change the state
-        if (listOfUsers.length !== this.allUsers.length) {
-            this.setState({
-                allUsers:listOfUsers
-            });
-        }
-        return listOfUsers;
-        */
     }
 
-    // returns the color associated with 
-    obtainCorrectColor(senderName) {
-        return this.allUsers.find(({ user }) => user === senderName).color;
+    /* 
+    If the last chat received (which triggered an update) is from a new user, assign that user a color. 
+    Also checks if the logged in user changed their color and if so, updates it accordingly
+    */
+    updateListOfUsers(){
+        let allChats=this.props.chats.chats;
+        const lastChat=allChats[allChats.length-1];
+        //console.log("from:", chat.from);
+        if (this.allUsers.has(lastChat.from) === false) {
+            this.allUsers.set(lastChat.from, randomColor());
+        }
+        // check if the logged in user's color has changed
+        let prevColor = this.allUsers.get(this.props.username);
+        if (prevColor !== this.props.loggedInUserColor) {
+            this.allUsers.set(this.props.username, this.props.loggedInUserColor);
+        }
+
     }
 
     render() {
-        //console.log('************************************** RENDERING ******************************');
-        let myChats = this.props.chats;
+        const myChats = this.props.chats;
         let displayChats = null;
 
-        // displays any messages present in chat
-        //console.log(myChats);
+        // if there are messages in the chat
         if ((myChats !== null) && (myChats !== undefined) && myChats.chats.length > 0) {
-            //console.log(myChats.chats);
-            this.generateListOfUsers();
-            //console.log("list:",listOfUsers);
+            // refresh the list of users
+            this.updateListOfUsers();
+            // displays any messages present in chat
             displayChats = myChats.chats.map((chat, index) => {
                 return <Message key={chat.id} contents={chat} loggedInUsername={this.props.username} prevName={this.determinePrevName(index)}
-                    nextName={this.determineNextName(index)} usernameColor={this.obtainCorrectColor(chat.from)} />
+                    nextName={this.determineNextName(index)} usernameColor={this.allUsers.get(chat.from)} />
             });
         }
 

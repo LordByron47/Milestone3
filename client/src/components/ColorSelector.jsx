@@ -1,5 +1,6 @@
 import React from 'react'
 
+// lets the user change the color of their username. Defaults to black
 export default function ColorSelector(props) {
     const displayStyle = {
         fontSize: '14px', paddingTop: '7px', backgroundColor: props.currentColor, height: '25px', width: '25px',

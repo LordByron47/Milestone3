@@ -3,6 +3,7 @@ import ColorSelector from './ColorSelector';
 import DisplayChats from './DisplayChats';
 import ChatInput from './ChatInput';
 
+// Called by ChatboxSubscription to actually handle rendering the various elements of the Chatbox
 class ChatboxRCE extends Component {
 
     constructor(props) {

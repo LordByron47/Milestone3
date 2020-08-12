@@ -1,56 +1,32 @@
-import React, { Component } from 'react'
+import React from 'react'
 
-export class Message extends Component {
+//renders an individual message
+export default function Message(props) {
 
-    /*
-    // we get passed a user object as this.props.currentUser. We need to see if that user has a color, or, if no user was found, generate a new one
-    obtainColor() {
-        if (this.props.currentUser === undefined) {
-            const newColor = randomColor();
-            const toAdd = {
-                user: this.props.contents.from,
-                color: newColor
-            };
-            //this.props.addUser(toAdd);
-            this.currentColor = newColor;
-        }
-        else {
-            this.currentColor = this.props.currentUser.color;
-        }
+    let myChat = props.contents;
 
+    let displayStyle = { borderBottomStyle: 'none' };
+    let fromField = null;
+    // If a sender sends multiple messages in a row, we only want the name to display for the first message
+    // Also, the border should be around a block of Messages from the same person. We don't want horizontal lines within a block.
+    if (props.prevName === myChat.from) {
+        displayStyle.borderTopStyle = 'none';
     }
-    */
-
-    render() {
-        let myChat = this.props.contents;
-        // if the message was sent by the user logged in to this instance of the chat, we want it right-justified.
-        let displayClass = (myChat.from === this.props.loggedInUsername) ? "card text-right" : "card";
-
-        let displayStyle = { borderBottomStyle: 'none' };
-        let fromField = "";
-        //if a sender sends multiple messages in a row, we only want the name to display for the first message
-        if (this.props.prevName === myChat.from) {
-            //fromField = "";
-            displayStyle.borderTopStyle = 'none';
-        }
-        else {
-            fromField = myChat.from;
-        }
-        //ensure the border is displayed on the bottom of the last message
-        if (this.props.nextName === "") {
-            displayStyle.borderBottomStyle = 'solid';
-        }
-
-        //console.log("Rendering:",myChat);
-        //console.log("color:",this.props.usernameColor);
-
-        return (
-            <div className={displayClass} style={displayStyle}>
-                <dt style={{ color: this.props.usernameColor }}>{fromField}</dt>
-                <dd>{myChat.message}</dd>
-            </div>
-        )
+    else {
+        fromField = myChat.from;
     }
+    //ensure the border is displayed on the bottom of the last message
+    if (props.nextName === "") {
+        displayStyle.borderBottomStyle = 'solid';
+    }
+
+    // if the message was sent by the user logged in to this instance of the chat, we want it right-justified.
+    let displayClass = (myChat.from === props.loggedInUsername) ? "card text-right" : "card";
+
+    return (
+        <div className={displayClass} style={displayStyle}>
+            <dt style={{ color: props.usernameColor }}>{fromField}</dt>
+            <dd>{myChat.message}</dd>
+        </div>
+    )
 }
-
-export default Message

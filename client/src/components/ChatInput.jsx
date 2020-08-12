@@ -2,6 +2,7 @@ import React from 'react'
 import { SEND_MESSAGE_MUTATION } from '../graphql';
 import { useMutation } from 'react-apollo';
 
+// handles the user sending a new chat
 export default function ChatInput(props) {
     // call sendMsg to send the message to the server
     const [sendMsg,] = useMutation(SEND_MESSAGE_MUTATION);

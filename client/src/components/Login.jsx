@@ -1,4 +1,6 @@
 import React, { Component } from 'react'
+
+//handles the user entering their username. Doesn't get rendered once they have entered a username
 export class Login extends Component {
 
     // checks the username is valid. If so, passes back up to App.js so the chat can be rendered
