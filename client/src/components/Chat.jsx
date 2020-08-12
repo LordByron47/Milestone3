@@ -8,7 +8,7 @@ export class Chat extends Component {
         this.state = {
             scrolledToBottom: false,
             initialSetupComplete: false,
-            //used to track users and their associated colors
+            //used to track users and their corresponding colors
             allUsers: [{
                 user: props.username,
                 color: props.loggedInUserColor
