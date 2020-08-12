@@ -8,15 +8,15 @@ export class Chat extends Component {
         this.state = {
             scrolledToBottom: false,
             initialSetupComplete: false,
+            //used to track users and their associated colors
             allUsers: [{
                 user: props.username,
-                color: "#000000"
+                color: props.loggedInUserColor
             }]
         }
         this.handleScroll = this.handleScroll.bind(this);
         this.determinePrevName = this.determinePrevName.bind(this);
         this.determineNextName = this.determineNextName.bind(this);
-        //this.addUser = this.addUser.bind(this);
     }
 
     // scroll to the bottom of the chat when you first log in
@@ -80,30 +80,13 @@ export class Chat extends Component {
         }
     }
 
-    /*
-    // callback function used to add a new user object to this.state.allUsers
-    addUser(newUser) {
-        //let newAllUsers = this.state.allUsers.concat(newUser);
-        this.setState((state) => {
-            return { allUsers: state.allUsers.concat(newUser) }
-        });
-    }
-    */
-
-    /*
-    //returns the current user object from allUsers[]. Returns undefined if not found
-    getCurrentUser(chat) {
-        return this.state.allUsers.find(user => user.user === chat.from);
-    }
-    */
-
     generateListOfUsers() {
         let listOfUsers = [...this.state.allUsers];
-        //console.log("starting users: ",listOfUsers)
+        //console.log("starting users: ", listOfUsers)
         this.props.chats.chats.map((chat) => {
-            //console.log(chat.from);
+            //console.log("from:", chat.from);
             let currentUser = listOfUsers.find(({ user }) => user === chat.from);
-            //console.log("found:",currentUser);
+            //console.log("found:", currentUser);
             if (currentUser === undefined) {
                 let newColor = randomColor();
                 let newUser = {
@@ -111,11 +94,19 @@ export class Chat extends Component {
                     color: newColor
                 };
                 listOfUsers.push(newUser);
-                //console.log("list of now: ",listOfUsers);
+                //console.log("added user. list is: ", listOfUsers);
             }
+            else if ((currentUser.user === this.props.username) && (currentUser.color !== this.props.loggedInUserColor)) {
+                listOfUsers.splice(0, 1, {
+                    user: this.props.username,
+                    color: this.props.loggedInUserColor
+                });
+                //console.log("changed loggedInColor. List is now:", listOfUsers)
+            }
+            //console.log("final new users:", listOfUsers);
             return "";
-        }
-        );
+        });
+
         if (listOfUsers.length !== this.state.allUsers.length) {
             this.setState({
                 allUsers: listOfUsers
@@ -124,11 +115,12 @@ export class Chat extends Component {
         return listOfUsers;
     }
 
-    obtainCorrectColor(listOfUsers, senderName){
+    obtainCorrectColor(listOfUsers, senderName) {
         return listOfUsers.find(({ user }) => user === senderName).color;
     }
 
     render() {
+        //console.log('************************************** RENDERING ******************************');
         let myChats = this.props.chats;
         let displayChats = null;
 

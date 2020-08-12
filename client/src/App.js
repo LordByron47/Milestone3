@@ -1,26 +1,23 @@
 import React, { Component } from 'react';
 import './App.css';
-import Chatbox from './components/Chatbox';
+import ChatboxSubscription from './components/ChatboxSubscription';
 import Login from './components/Login';
-
 
 class App extends Component {
 
   state = {
     username: "",
-    entered: false
   }
 
   setUsername = (newUsername) => {
     this.setState({
       username: newUsername,
-      entered: true
     })
   }
 
   render() {
     // conditionally render either the Login field or the Chat window
-    let ret = (this.state.entered === true) ? <Chatbox username={this.state.username} /> : <Login enterChat={this.setUsername} />;
+    let ret = (this.state.username !== '') ? <ChatboxSubscription username={this.state.username} /> : <Login enterChat={this.setUsername} />;
 
     return (
       <React.Fragment>

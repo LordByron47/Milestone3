@@ -1,38 +1,27 @@
 import React, { Component } from 'react'
 export class Login extends Component {
-    
-    constructor(props){
-        super(props);
-        this.state={
-            user:""
-        }
-    }
 
+    // checks the username is valid. If so, passes back up to App.js so the chat can be rendered
     handleSubmit = (event) => {
+        const input = document.getElementById('usernameInput');
         event.preventDefault();
 
         // user is required to supply a username
-        if (this.state.user === "") {    
+        if (input.value === "") {
             alert("Username cannot be blank.");
         }
-        else if(this.state.user.length > 32){
+        else if (input.value.length > 32) {
             alert("Username must be less than 32 characters.");
-            this.setState({user:""});
+            input.value = '';
         }
         // there is a valid username
         else {
             //remove any whitespace and standardize the characters in the string
-            let name = this.state.user.trim().normalize();
+            let name = input.value.trim().normalize();
             //capitalize the start of any words
             name = name.replace(/\b\w/g, c => c.toUpperCase());
             this.props.enterChat(name);
         }
-    }
-
-    handleChange = (event) => {
-        this.setState({
-            user:event.target.value
-          });
     }
 
     render() {
@@ -45,9 +34,9 @@ export class Login extends Component {
                                 <input id="usernameInput" type='text'
                                     className="form-control"
                                     placeholder="Enter your username"
-                                    aria-label="Username" value={this.state.user} onChange={this.handleChange} />
+                                    aria-label="Username" />
                                 <div className='input-group-append'>
-                                    <button type="submit" className="btn btn-primary">Enter!</button>
+                                    <button type="submit" className="btn btn-primary">Log In</button>
                                 </div>
                             </div>
                         </div>

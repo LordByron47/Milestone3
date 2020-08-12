@@ -41,8 +41,8 @@ export class Message extends Component {
             displayStyle.borderBottomStyle = 'solid';
         }
 
-        //logic to ensure each username is in its own color
-        //const userColor=this.obtainColor();
+        //console.log("Rendering:",myChat);
+        //console.log("color:",this.props.usernameColor);
 
         return (
             <div className={displayClass} style={displayStyle}>
