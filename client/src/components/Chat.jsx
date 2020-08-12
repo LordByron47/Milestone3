@@ -8,15 +8,15 @@ export class Chat extends Component {
         this.state = {
             scrolledToBottom: false,
             initialSetupComplete: false,
-            //used to track users and their corresponding colors
-            allUsers: [{
-                user: props.username,
-                color: props.loggedInUserColor
-            }]
         }
         this.handleScroll = this.handleScroll.bind(this);
         this.determinePrevName = this.determinePrevName.bind(this);
         this.determineNextName = this.determineNextName.bind(this);
+        //used to track users and their corresponding colors. NOT in state to avoid error from settingState during renders
+        this.allUsers= [{
+            user: props.username,
+            color: props.loggedInUserColor
+        }]
     }
 
     // scroll to the bottom of the chat when you first log in
@@ -49,12 +49,8 @@ export class Chat extends Component {
         //set the chat window to scroll to the bottom when initially loaded
         let target = document.getElementById("chatDiv");
         if (target != null) {
-            //console.log("target found");
-            let isAtBottom = (target.scrollHeight - target.scrollTop <= target.offsetHeight + 1); // for some reason, target.scrollTop occassionally becomes a decimal. Difference 
-            //console.log("height:", target.scrollHeight, ", top:", target.scrollTop, ", offset:", target.offsetHeight);
-            //console.log("isAtBottom: " + isAtBottom);
+            let isAtBottom = (target.scrollHeight - target.scrollTop <= target.offsetHeight + 1); // for some reason, target.scrollTop occassionally becomes a decimal. Difference < 1
             if (isAtBottom !== this.state.scrolledToBottom) {
-                //console.log("changing scrolledToBottom");
                 this.setState(() => ({ scrolledToBottom: isAtBottom }));
             }
         }
@@ -80,12 +76,11 @@ export class Chat extends Component {
         }
     }
 
+    //ensures each user in this.allUsers has a color assigned to them
     generateListOfUsers() {
-        let listOfUsers = [...this.state.allUsers];
-        //console.log("starting users: ", listOfUsers)
         this.props.chats.chats.map((chat) => {
             //console.log("from:", chat.from);
-            let currentUser = listOfUsers.find(({ user }) => user === chat.from);
+            let currentUser = this.allUsers.find(({ user }) => user === chat.from);
             //console.log("found:", currentUser);
             if (currentUser === undefined) {
                 let newColor = randomColor();
@@ -93,11 +88,11 @@ export class Chat extends Component {
                     user: chat.from,
                     color: newColor
                 };
-                listOfUsers.push(newUser);
+                this.allUsers.push(newUser);
                 //console.log("added user. list is: ", listOfUsers);
             }
             else if ((currentUser.user === this.props.username) && (currentUser.color !== this.props.loggedInUserColor)) {
-                listOfUsers.splice(0, 1, {
+                this.allUsers.splice(0, 1, {
                     user: this.props.username,
                     color: this.props.loggedInUserColor
                 });
@@ -106,17 +101,20 @@ export class Chat extends Component {
             //console.log("final new users:", listOfUsers);
             return "";
         });
-
-        if (listOfUsers.length !== this.state.allUsers.length) {
+        /*
+        //change the state
+        if (listOfUsers.length !== this.allUsers.length) {
             this.setState({
-                allUsers: listOfUsers
-            })
+                allUsers:listOfUsers
+            });
         }
         return listOfUsers;
+        */
     }
 
-    obtainCorrectColor(listOfUsers, senderName) {
-        return listOfUsers.find(({ user }) => user === senderName).color;
+    // returns the color associated with 
+    obtainCorrectColor(senderName) {
+        return this.allUsers.find(({ user }) => user === senderName).color;
     }
 
     render() {
@@ -128,11 +126,11 @@ export class Chat extends Component {
         //console.log(myChats);
         if ((myChats !== null) && (myChats !== undefined) && myChats.chats.length > 0) {
             //console.log(myChats.chats);
-            let listOfUsers = this.generateListOfUsers();
+            this.generateListOfUsers();
             //console.log("list:",listOfUsers);
             displayChats = myChats.chats.map((chat, index) => {
                 return <Message key={chat.id} contents={chat} loggedInUsername={this.props.username} prevName={this.determinePrevName(index)}
-                    nextName={this.determineNextName(index)} usernameColor={this.obtainCorrectColor(listOfUsers, chat.from)} />
+                    nextName={this.determineNextName(index)} usernameColor={this.obtainCorrectColor(chat.from)} />
             });
         }
 
